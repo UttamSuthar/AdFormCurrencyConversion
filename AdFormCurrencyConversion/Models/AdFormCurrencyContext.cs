@@ -13,10 +13,31 @@ public partial class AdFormCurrencyContext : DbContext
     {
     }
 
+    public virtual DbSet<CurrencyConversionHistory> CurrencyConversionHistories { get; set; }
+
     public virtual DbSet<ExchangeRate> ExchangeRates { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<CurrencyConversionHistory>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Currency__3214EC0767BDB466");
+
+            entity.ToTable("CurrencyConversionHistory");
+
+            entity.Property(e => e.ConversionDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ConvertedAmount).HasColumnType("decimal(18, 6)");
+            entity.Property(e => e.FromCurrency)
+                .IsRequired()
+                .HasMaxLength(10);
+            entity.Property(e => e.InputAmount).HasColumnType("decimal(18, 6)");
+            entity.Property(e => e.ToCurrency)
+                .IsRequired()
+                .HasMaxLength(10);
+        });
+
         modelBuilder.Entity<ExchangeRate>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Exchange__3214EC07014FF57C");
@@ -24,6 +45,10 @@ public partial class AdFormCurrencyContext : DbContext
             entity.Property(e => e.CurrencyCode)
                 .IsRequired()
                 .HasMaxLength(10);
+            entity.Property(e => e.CurrencyCodeReference)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasDefaultValue("DKK");
             entity.Property(e => e.CurrencyDesc).HasMaxLength(100);
             entity.Property(e => e.LastUpdated)
                 .HasDefaultValueSql("(getdate())")

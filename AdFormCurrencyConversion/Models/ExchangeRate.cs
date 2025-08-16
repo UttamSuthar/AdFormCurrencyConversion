@@ -16,4 +16,6 @@ public partial class ExchangeRate
     public decimal Rate { get; set; }
 
     public DateTime? LastUpdated { get; set; }
+
+    public string CurrencyCodeReference { get; set; }
 }

@@ -5,7 +5,7 @@ namespace AdFormCurrencyConversion.Domains
 
     //Root element
     [XmlRoot("exchangerates")]
-    public class ExchangeRates
+    public class LiveExchangeRates
     {
         [XmlElement("dailyrates")]
         public DailyRates DailyRates { get; set; } 

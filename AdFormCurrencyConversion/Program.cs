@@ -13,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<ILiveRatesService, LiveRatesService>();
+builder.Services.AddTransient<IExchangeRateService, ExchangeRateService>();
 
 // read connection string
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

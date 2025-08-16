@@ -16,6 +16,10 @@
    "T4TemplatePath": null,
    "Tables": [
       {
+         "Name": "[dbo].[CurrencyConversionHistory]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[ExchangeRates]",
          "ObjectType": 0
       }
