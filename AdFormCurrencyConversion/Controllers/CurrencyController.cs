@@ -2,6 +2,7 @@
 using AdFormCurrencyConversion.DTOs;
 using AdFormCurrencyConversion.Models;
 using AdFormCurrencyConversion.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace AdFormCurrencyConversion.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
     public class CurrencyController : ControllerBase
     {
         private IExchangeRateService _exchangeRateService;
