@@ -14,9 +14,11 @@ namespace AdFormCurrencyConversion.Services
     public class LiveRatesService : ILiveRatesService
     {
         private HttpClient _httpClient;
-        public LiveRatesService(HttpClient httpClient)
+        private ILogger<LiveRatesService> _logger;
+        public LiveRatesService(HttpClient httpClient, ILogger<LiveRatesService> logger)
         {
             _httpClient = httpClient;
+            _logger = logger;
         }
         public async Task<DailyRates?> FetchCurrencyRates()
         {
@@ -31,6 +33,7 @@ namespace AdFormCurrencyConversion.Services
             catch (Exception ex)
             {
                 //log
+                _logger.LogError(ex, "Somethig went wrong, while fetching!!!");
                 return null;
             }
         }

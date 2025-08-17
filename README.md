@@ -1,7 +1,17 @@
 
 
-************ Important ***********
+************ Important (Please Read)***********
 Please go throught PROJECT SETUP.docx file ,attached in email and with project as well in project folder
+
+
+(1) From National Banken API, rate was coming with "," so I consider comma as "." decimal ,
+	ex: 638,57 -> 638.57 
+		0,0395 -> 0.0395
+
+(2) Project is in .net 8 framework
+(3) Database is in MSSQL , (DB name "AdFormCurrency")
+(4) Assumption that conversion will happen only for DKK.
+(5) ConversionHistory API, the date format should be "YYYY-MM-DD"
 *****************************************
 
 
@@ -32,8 +42,7 @@ Body:
   "password": "admin"
 }
 
-Copy the returned JWT token and past
-
+Copy the returned JWT token and past in Authorize section of Swagger UI.
 
 ##########################################
 

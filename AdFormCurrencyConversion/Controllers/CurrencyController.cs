@@ -15,10 +15,12 @@ namespace AdFormCurrencyConversion.Controllers
     public class CurrencyController : ControllerBase
     {
         private IExchangeRateService _exchangeRateService;
+        private ILogger<CurrencyController> _logger;
 
-        public CurrencyController(IExchangeRateService exchangeRateService)
+        public CurrencyController(IExchangeRateService exchangeRateService,ILogger<CurrencyController> logger)
         {
             _exchangeRateService = exchangeRateService;
+            _logger = logger;
         }
 
         [HttpGet("AllExchangeRates")]
@@ -47,7 +49,6 @@ namespace AdFormCurrencyConversion.Controllers
             return convertedRates;
         }
 
-        //SingleRates
         [HttpGet("ConversionHistory")]
         public async Task<ActionResult<List<ConversionRatesHistoryDTO>>> ConversionHistory([FromQuery]string currencycode,
             [FromQuery]DateTime? from, [FromQuery] DateTime? to)
@@ -67,13 +68,11 @@ namespace AdFormCurrencyConversion.Controllers
             return conversionHistory;
         }
 
-
-
-
         [HttpGet("RefreshConversionRates")]
         public async Task<string> Refresh()
         {
             await _exchangeRateService.ConversionRatesUpdate();
+            _logger.LogInformation("Exchange Rates are Refreshed!!!");
             return "Refreshed";
         }
 

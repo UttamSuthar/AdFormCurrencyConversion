@@ -8,10 +8,12 @@ namespace AdFormCurrencyConversion.Services
         private Timer? _timer;
         private ILiveRatesService _liveRatesService;
         private IServiceScopeFactory _serviceScopeFactory;
-        public CurrencyRatesSchedulerService(ILiveRatesService liveRatesService, IServiceScopeFactory serviceScopeFactory)
+        private ILogger<CurrencyRatesSchedulerService> _logger;
+        public CurrencyRatesSchedulerService(ILiveRatesService liveRatesService, IServiceScopeFactory serviceScopeFactory,ILogger<CurrencyRatesSchedulerService> logger)
         {
             _liveRatesService = liveRatesService;
             _serviceScopeFactory = serviceScopeFactory;
+            _logger = logger;
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
@@ -27,44 +29,10 @@ namespace AdFormCurrencyConversion.Services
                 using var scope = _serviceScopeFactory.CreateScope();
                 var exchangeRateService = scope.ServiceProvider.GetRequiredService<IExchangeRateService>();
                 await exchangeRateService.ConversionRatesUpdate();
-                //var liveCurrencyRates = await _liveRatesService.FetchCurrencyRates();
-                //using var scope = _serviceScopeFactory.CreateScope();
-                //var context = scope.ServiceProvider.GetRequiredService<AdFormCurrencyContext>();
-
-                //foreach (var currency in liveCurrencyRates.Currencies)
-                //{
-                //    //Add to table
-                //    currency.Rate = currency.Rate.Replace(",", ".");
-                //    var existingCurrency = context.ExchangeRates.FirstOrDefault(a => a.CurrencyCode == currency.Code);
-                //    if (existingCurrency != null)
-                //    {
-                //        //assuming here "," as decimal
-                //        var newRate = Convert.ToDecimal(currency.Rate);
-                //        if (existingCurrency.Rate != newRate)
-                //        {
-                //            existingCurrency.Rate = newRate;
-                //            existingCurrency.LastUpdated = Convert.ToDateTime(liveCurrencyRates.Date);
-                //            await context.SaveChangesAsync();
-                //        }
-                //    }
-                //    else
-                //    {
-
-                //        context.ExchangeRates.Add(new ExchangeRate
-                //        {
-                //            CurrencyCode = currency.Code,
-                //            CurrencyDesc = currency.Description,
-                //            LastUpdated = DateTime.Now,
-                //            Rate = Convert.ToDecimal(currency.Rate)
-                //        });
-                //    }
-                //}
-                //await context.SaveChangesAsync();
-
             }
             catch (Exception ex)
             {
-                //log
+                _logger.LogError(ex, "Something went wrong while refresing the rates!!!");
             }
         }
 
