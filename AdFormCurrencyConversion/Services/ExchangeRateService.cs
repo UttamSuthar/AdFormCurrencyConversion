@@ -58,7 +58,6 @@ namespace AdFormCurrencyConversion.Services
         {
             try
             {
-
                 //get exchangeRates
                 var exchangeRate = await _context.ExchangeRates.FirstOrDefaultAsync(a => a.CurrencyCode == request.CurrencyCode.ToUpper());
                 if (exchangeRate != null)
@@ -104,7 +103,7 @@ namespace AdFormCurrencyConversion.Services
                 a => a.FromCurrency == code.ToUpper()
                 && (!from.HasValue || (a.ConversionDate.Date >= from.Value.Date))
                 && (!to.HasValue || (a.ConversionDate.Date <= to.Value.Date))
-                ).ToList();
+                ).AsNoTracking().ToList();
             if (conversionHistory != null)
             {
 
@@ -114,9 +113,9 @@ namespace AdFormCurrencyConversion.Services
                     {
                         ConversionDate = ch.ConversionDate,
                         ConvertedAmount = ch.ConvertedAmount,
-                        FromCurrency = ch.FromCurrency,
+                        FromCurrency = ch.FromCurrency.ToUpper(),
                         InputAmount = ch.InputAmount,
-                        ToCurrency = ch.ToCurrency
+                        ToCurrency = ch.ToCurrency.ToUpper()
                     });
                 }
             }

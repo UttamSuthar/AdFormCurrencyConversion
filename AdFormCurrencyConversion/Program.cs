@@ -1,4 +1,5 @@
-﻿using AdFormCurrencyConversion.Models;
+﻿using AdFormCurrencyConversion;
+using AdFormCurrencyConversion.Models;
 using AdFormCurrencyConversion.Services;
 using log4net;
 using log4net.Config;
@@ -16,7 +17,7 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-
+       
         //Logs
         builder.Logging.ClearProviders();
         // Manually configure log4net (important)
@@ -56,7 +57,7 @@ internal class Program
 
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Currency API", Version = "v1" });
 
-            // 🔐 Add JWT Auth support
+            // Add JWT Auth support
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Name = "Authorization",
@@ -107,6 +108,8 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseMiddleware<LoggingMiddlewareCustom>();
 
         app.UseHttpsRedirection();
 

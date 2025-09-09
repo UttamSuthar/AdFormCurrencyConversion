@@ -4,6 +4,7 @@ using AdFormCurrencyConversion.DTOs;
 using AdFormCurrencyConversion.Models;
 using AdFormCurrencyConversion.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace AdFormCurrencyConversion.Tests
@@ -12,11 +13,13 @@ namespace AdFormCurrencyConversion.Tests
     {
         private readonly Mock<IExchangeRateService> _mockService;
         private readonly CurrencyController _controller;
+        private readonly Mock<ILogger<CurrencyController>> _logger;
 
         public CurrencyControllerTest()
         {
             _mockService = new Mock<IExchangeRateService>();
-            _controller = new CurrencyController(_mockService.Object);
+            _logger = new Mock<ILogger<CurrencyController>>();
+            _controller = new CurrencyController(_mockService.Object,_logger.Object);
         }
 
         [Fact]

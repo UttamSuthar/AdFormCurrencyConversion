@@ -3,6 +3,7 @@ using AdFormCurrencyConversion.DTOs;
 using AdFormCurrencyConversion.Models;
 using AdFormCurrencyConversion.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace AdFormCurrencyConversion.Tests
@@ -12,6 +13,7 @@ namespace AdFormCurrencyConversion.Tests
         private readonly ExchangeRateService _service;
         private readonly AdFormCurrencyContext _context;
         private readonly Mock<ILiveRatesService> _mockLiveRatesService;
+        private readonly Mock<ILogger<ExchangeRateService>> _logger;
 
         public ExchangeRateServiceTests()
         {
@@ -29,7 +31,7 @@ namespace AdFormCurrencyConversion.Tests
                 CurrencyDesc = "US Dollar",
                 Rate = 80,
                 LastUpdated = DateTime.Now,
-                CurrencyCodeReference="DKK"
+                CurrencyCodeReference = "DKK"
             });
 
             _context.CurrencyConversionHistories.Add(new CurrencyConversionHistory
@@ -45,7 +47,8 @@ namespace AdFormCurrencyConversion.Tests
 
             _mockLiveRatesService = new Mock<ILiveRatesService>();
 
-            _service = new ExchangeRateService(_context, _mockLiveRatesService.Object);
+            _logger = new Mock<ILogger<ExchangeRateService>>();
+            _service = new ExchangeRateService(_context, _mockLiveRatesService.Object, _logger.Object);
         }
 
         [Fact]
@@ -114,7 +117,7 @@ namespace AdFormCurrencyConversion.Tests
 
             // Assert
             var usdRate = await _context.ExchangeRates.FirstOrDefaultAsync(x => x.CurrencyCode == "USD");
-            
+
             Assert.Equal(85, usdRate.Rate);
         }
     }
