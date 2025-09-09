@@ -1,4 +1,4 @@
-﻿trigger:
+trigger:
   - main   # runs when you push to main branch (change if your branch is 'master')
 
 pool:
