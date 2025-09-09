@@ -2,7 +2,10 @@ trigger:
   - main   # runs when you push to main branch (change if your branch is 'master')
 
 pool:
-  vmImage: 'windows-latest'
+    name: 'Default'
+
+# pool:
+#   vmImage: 'windows-latest'
 
 variables:
   buildConfiguration: 'Release'
