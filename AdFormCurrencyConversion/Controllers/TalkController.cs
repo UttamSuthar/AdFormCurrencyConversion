@@ -14,7 +14,7 @@ namespace AdFormCurrencyConversion.Controllers
         [HttpGet]
         public async Task<string> Ask([FromQuery] string question)
         {
-            return "";
+            return "Uttam";
         }
 
         //[NonAction]
